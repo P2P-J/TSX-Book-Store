@@ -1,0 +1,14 @@
+@"
+*
+*/
+
+!book-store-c/
+!book-store-c/src/
+!book-store-c/src/**
+
+!book-store-v/
+!book-store-v/src/
+!book-store-v/src/**
+
+!.gitignore
+"@ | Out-File -FilePath .gitignore -Encoding UTF8
