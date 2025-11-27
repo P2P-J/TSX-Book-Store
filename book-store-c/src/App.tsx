@@ -7,6 +7,29 @@ import { ThemeName, getTheme } from "./style/theme";
 import ThemeSwitcher from "./components/common/header/ThemeSwitcher";
 import { useContext, useState } from "react";
 import { BookStoreThemePrivider } from "./context/themeContext";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Error from "./components/common/Error";
+import Signup from "./pages/Signup";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: (
+      <Layout>
+        <Home />
+      </Layout>
+    ),
+    errorElement: <Error />,
+  },
+  {
+    path: "/signup",
+    element: (
+      <Layout>
+        <Signup />
+      </Layout>
+    ),
+  },
+]);
 
 function App() {
   const { themeName, setThemeName } = useContext(ThemeContext);
@@ -14,9 +37,7 @@ function App() {
   return (
     <BookStoreThemePrivider>
       {/* <ThemeSwitcher themeName={themeName} setThemeName={setThemeName} /> */}
-      <Layout>
-        <Home /> 이 부분이 children으로 전달돼
-      </Layout>
+      <RouterProvider router={router} /> 이 부분이 children으로 전달돼
     </BookStoreThemePrivider>
   );
 }

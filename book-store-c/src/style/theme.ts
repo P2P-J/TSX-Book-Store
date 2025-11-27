@@ -2,7 +2,13 @@ import { StringLiteral } from "typescript";
 
 export type ThemeName = "light" | "dark";
 
-export type ColorKey = "primary" | "background" | "secondary" | "third";
+export type ColorKey =
+  | "primary"
+  | "background"
+  | "secondary"
+  | "third"
+  | "border"
+  | "text";
 
 export type HeadingSize = "large" | "medium" | "small";
 
@@ -10,6 +16,7 @@ export type ButtonSize = "large" | "medium" | "small";
 
 export type ButtonScheme = "primary" | "normal";
 
+export type LayoutWidth = "large" | "medium" | "small";
 interface Theme {
   name: ThemeName;
   color: Record<ColorKey, string>;
@@ -34,7 +41,12 @@ interface Theme {
   borderRadius: {
     default: string;
   };
-} // [key in ColorKey]: string;
+  layout: {
+    width: {
+      [key in LayoutWidth]: string;
+    };
+  };
+}
 
 export const light: Theme = {
   name: "light",
@@ -43,6 +55,8 @@ export const light: Theme = {
     background: "lightgray",
     secondary: "blue",
     third: "green",
+    border: "grey",
+    text: "black",
   },
   heading: {
     large: {
@@ -83,6 +97,14 @@ export const light: Theme = {
   borderRadius: {
     default: "4px",
   },
+  layout: {
+    width: {
+      large: "1020px",
+      medium: "760",
+      small: "320px"
+      
+    }
+  }
 };
 export const dark: Theme = {
   ...light,
@@ -92,6 +114,8 @@ export const dark: Theme = {
     background: "midnightblue",
     secondary: "lightblue",
     third: "lightgreen",
+    border: "grey",
+    text: "black",
   },
 };
 
