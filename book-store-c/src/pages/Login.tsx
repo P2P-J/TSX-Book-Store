@@ -5,15 +5,16 @@ import Button from "../components/common/Button";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import { signup } from "../api/auth.api";
+import { login, signup } from "../api/auth.api";
 import { useAlert } from "../hooks/useAlert";
+import { SignupStyle } from "./Signup";
 
 export interface SignupProps {
   email: string;
   password: string;
 }
 
-function Signup() {
+function Login() {
   const navigate = useNavigate();
   const showAlert = useAlert();
   //   const [email, setEmail] = useState("");
@@ -23,6 +24,8 @@ function Signup() {
   //     event.preventDefault();
   //   };
 
+  const { isloggedIn, storeLogin, storeLogout } = useAuthStore();
+
   const {
     register,
     handleSubmit,
@@ -30,16 +33,22 @@ function Signup() {
   } = useForm<SignupProps>();
 
   const onSubmit = (data: SignupProps) => {
-    signup(data).then((res) => {
-      //성공
-      showAlert("회원가입이 완료되었습니다.");
-      navigate("/login");
-    });
+    login(data).then(
+      (res) => {
+        //로그인했을때, 상태변화를 해줘야해.
+        storeLogin(res.token);
+        showAlert("로그인 완료되었습니다.");
+        navigate("/");
+      },
+      (error) => {
+        showAlert("로그인에 실패했습니다. ");
+      }
+    );
   };
 
   return (
     <>
-      <Title size="large">회원가입</Title>
+      <Title size="large">로그인</Title>
       <SignupStyle>
         <form onSubmit={handleSubmit(onSubmit)}>
           <fieldset>
@@ -64,7 +73,7 @@ function Signup() {
           </fieldset>
           <fieldset>
             <Button type="submit" size="medium" scheme="primary">
-              회원가입
+              로그인
             </Button>
           </fieldset>
           <div className="info">
@@ -76,27 +85,4 @@ function Signup() {
   );
 }
 
-export const SignupStyle = styled.div`
-  max-width: ${({ theme }) => theme.layout.width.small};
-  margin: 80px auto;
-
-  fieldset {
-    border: 0;
-    padding: 0 0 8px 0;
-    .error-text {
-      color: red;
-    }
-  }
-  input {
-    width: 100%;
-  }
-  button {
-    width: 100%;
-  }
-  .info {
-    text-align: center;
-    padding: 16px 0 0 0;
-  }
-`;
-
-export default Signup;
+export default Login;
