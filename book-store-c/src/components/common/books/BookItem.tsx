@@ -3,9 +3,11 @@ import { Book } from "../../../models/book.model";
 import { Link } from "react-router-dom";
 import { FaHeart } from "react-icons/fa";
 import { formatNumber } from "../../../utils/format";
+import { ViewMode } from "./BooksViewSwitcher";
 
 interface Props {
   book: Book;
+  view?: ViewMode;
 }
 
 function BookItem({ book, view }: Props) {
@@ -14,7 +16,7 @@ function BookItem({ book, view }: Props) {
   }
 
   return (
-    <BookItemStyle>
+    <BookItemStyle view={view}>
       <Link to={`/book/${book.id}`}>
         <div className="img">
           <img src={getImgSrc(book.img)} alt={book.title} />
@@ -33,19 +35,22 @@ function BookItem({ book, view }: Props) {
     </BookItemStyle>
   );
 }
-const BookItemStyle = styled.div`
-
-display: flex;
-flex-direction: column;
- box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
- 
- .img {
- border-radius: ${({ theme}) => theme.borderRadius.default};
- overflow : hidden;
-  img{
-  max-width: 100%;
+const BookItemStyle = styled.div<Pick<Props, "view">>`
+  a {
+    display: flex;
+    flex-direction: ${({ view }) => (view === "grid" ? "column" : "row")};
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+    text-decoration: none;
   }
-}
+
+  .img {
+    border-radius: ${({ theme }) => theme.borderRadius.default};
+    overflow: hidden;
+    width: ${({ view }) => (view === "grid" ? "auto" : "160px")};
+    img {
+      max-width: 100%;
+    }
+  }
   .content {
     padding: 16px;
     position: relative;
@@ -93,6 +98,5 @@ flex-direction: column;
     }
   }
 `;
- 
 
 export default BookItem;
